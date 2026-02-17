@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { cors, handleOptions, fetchPublicApi } from './_utils';
+import { cors, handleOptions, fetchPublicApi } from './_utils.js';
 
 /**
  * 국민연금공단 공공API 프록시

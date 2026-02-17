@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { cors, handleOptions } from './_utils';
+import { cors, handleOptions } from './_utils.js';
 
 /**
  * 헬스체크 엔드포인트
