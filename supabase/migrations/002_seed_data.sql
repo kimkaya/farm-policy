@@ -4,18 +4,18 @@
 
 -- 1. 정책 카테고리
 INSERT INTO policy_categories (id, name, icon, description, color, sort_order) VALUES
-  ('cat-farm-001', '농업 지원', 'Tractor', '직불제, 영농자금, 농기계 등 농업 활동 지원 정책', '#16a34a', 1),
-  ('cat-pension-001', '연금/기초연금', 'Landmark', '국민연금, 기초연금, 농지연금 등 노후 보장 정책', '#2563eb', 2),
-  ('cat-health-001', '건강/의료', 'Heart', '건강보험 감면, 건강검진, 농업인 안전보험 등', '#dc2626', 3),
-  ('cat-welfare-001', '생활 복지', 'Home', '기초생활보장, 주거지원, 에너지바우처 등 생활 지원', '#9333ea', 4),
-  ('cat-local-001', '지자체 지원', 'MapPin', '시도/시군구별 자체 지원 사업', '#ca8a04', 5),
-  ('cat-edu-001', '교육/컨설팅', 'GraduationCap', '영농교육, 컨설팅, 후계농 육성 등', '#0891b2', 6);
+  ('a0000001-0000-0000-0000-000000000001', '농업 지원', 'Tractor', '직불제, 영농자금, 농기계 등 농업 활동 지원 정책', '#16a34a', 1),
+  ('a0000001-0000-0000-0000-000000000002', '연금/기초연금', 'Landmark', '국민연금, 기초연금, 농지연금 등 노후 보장 정책', '#2563eb', 2),
+  ('a0000001-0000-0000-0000-000000000003', '건강/의료', 'Heart', '건강보험 감면, 건강검진, 농업인 안전보험 등', '#dc2626', 3),
+  ('a0000001-0000-0000-0000-000000000004', '생활 복지', 'Home', '기초생활보장, 주거지원, 에너지바우처 등 생활 지원', '#9333ea', 4),
+  ('a0000001-0000-0000-0000-000000000005', '지자체 지원', 'MapPin', '시도/시군구별 자체 지원 사업', '#ca8a04', 5),
+  ('a0000001-0000-0000-0000-000000000006', '교육/컨설팅', 'GraduationCap', '영농교육, 컨설팅, 후계농 육성 등', '#0891b2', 6);
 
 -- 2. 농업 지원 정책
 INSERT INTO policies (id, category_id, title, summary, description, eligibility, benefits, required_documents, apply_url, apply_method, contact_info, department, min_age, max_age, min_income, max_income, required_farm_area, required_farming_types, required_region, requires_eco_cert, is_active) VALUES
 
 -- 공익직접지불제 (기본형)
-('pol-001', 'cat-farm-001',
+('b0000001-0000-0000-0000-000000000001', 'a0000001-0000-0000-0000-000000000001',
  '공익직접지불제 (기본형 직불금)',
  '농업의 공익적 기능 증진을 위해 농업인에게 직접 지급하는 직불금',
  '공익직접지불제는 농업·농촌의 공익 기능 증진과 농업인의 소득 안정을 위해 시행되는 제도입니다. 기본형 직불금은 소농직불금과 면적직불금으로 구분되며, 소농직불금은 일정 조건을 충족하는 소규모 농가에 연 120만원을 정액 지급합니다. 면적직불금은 농지 면적에 따라 차등 지급됩니다.',
@@ -29,7 +29,7 @@ INSERT INTO policies (id, category_id, title, summary, description, eligibility,
  NULL, NULL, NULL, NULL, 100, NULL, NULL, FALSE, TRUE),
 
 -- 친환경농업직접직불제
-('pol-002', 'cat-farm-001',
+('b0000001-0000-0000-0000-000000000002', 'a0000001-0000-0000-0000-000000000001',
  '친환경농업 직접직불제',
  '친환경 인증 농산물을 생산하는 농업인에게 추가 직불금 지급',
  '친환경농업을 실천하는 농가의 소득을 보전하고 친환경농업 확산을 위한 정책입니다. 유기농업, 무농약 농산물 인증을 받은 농가에 면적 기준으로 직불금을 지급합니다.',
@@ -43,7 +43,7 @@ INSERT INTO policies (id, category_id, title, summary, description, eligibility,
  NULL, NULL, NULL, NULL, 100, NULL, NULL, TRUE, TRUE),
 
 -- 밭농업직불제
-('pol-003', 'cat-farm-001',
+('b0000001-0000-0000-0000-000000000003', 'a0000001-0000-0000-0000-000000000001',
  '밭농업 직접직불제',
  '밭작물 재배 농가의 소득 안정을 위한 직불금',
  '쌀 중심의 농업 구조에서 밭작물 자급률을 높이고, 밭작물 재배 농가의 소득을 보전하기 위한 정책입니다. 콩, 팥, 옥수수 등 밭작물 재배 농가에 면적 기준으로 직불금을 지급합니다.',
@@ -57,7 +57,7 @@ INSERT INTO policies (id, category_id, title, summary, description, eligibility,
  NULL, NULL, NULL, NULL, 100, ARRAY['밭농업'], NULL, FALSE, TRUE),
 
 -- 후계농업경영인 지원
-('pol-004', 'cat-farm-001',
+('b0000001-0000-0000-0000-000000000004', 'a0000001-0000-0000-0000-000000000001',
  '후계농업경영인 육성 지원사업',
  '젊은 농업인의 영농 정착을 위한 자금 지원',
  '농업에 뜻을 둔 청년 및 후계 농업인이 안정적으로 영농에 정착할 수 있도록 영농 정착 자금과 교육을 지원하는 사업입니다.',
@@ -71,7 +71,7 @@ INSERT INTO policies (id, category_id, title, summary, description, eligibility,
  18, 50, NULL, NULL, NULL, NULL, NULL, FALSE, TRUE),
 
 -- 농기계 임대사업
-('pol-005', 'cat-farm-001',
+('b0000001-0000-0000-0000-000000000005', 'a0000001-0000-0000-0000-000000000001',
  '농업기계 임대사업',
  '고가의 농기계를 저렴하게 임대하여 농가 경영비 절감',
  '농가가 개별적으로 구입하기 어려운 고가의 농기계를 시군 농업기술센터에서 저렴한 비용으로 임대해주는 사업입니다.',
@@ -85,7 +85,7 @@ INSERT INTO policies (id, category_id, title, summary, description, eligibility,
  NULL, NULL, NULL, NULL, 100, NULL, NULL, FALSE, TRUE),
 
 -- 조건불리지역직접지불제
-('pol-006', 'cat-farm-001',
+('b0000001-0000-0000-0000-000000000006', 'a0000001-0000-0000-0000-000000000001',
  '조건불리지역 직접지불제',
  '경지 조건이 불리한 지역 농업인에게 보조금 지급',
  '경사도가 높거나 수원이 먼 등 영농 조건이 불리한 지역에서 농업에 종사하는 농업인의 소득을 보전하기 위한 제도입니다.',
@@ -102,7 +102,7 @@ INSERT INTO policies (id, category_id, title, summary, description, eligibility,
 INSERT INTO policies (id, category_id, title, summary, description, eligibility, benefits, required_documents, apply_url, apply_method, contact_info, department, min_age, max_age, min_income, max_income, required_farm_area, required_farming_types, required_region, requires_eco_cert, is_active) VALUES
 
 -- 국민연금
-('pol-101', 'cat-pension-001',
+('b0000001-0000-0000-0000-000000000101', 'a0000001-0000-0000-0000-000000000002',
  '국민연금',
  '만 60세(출생연도별 상이)부터 수령 가능한 노후 소득 보장 제도',
  '국민연금은 가입자가 일정 기간 보험료를 납부한 후, 노령·장애·사망 등으로 소득능력이 감소할 때 연금을 지급하는 사회보장 제도입니다. 농업인도 지역가입자로 가입하며, 농어민 연금보험료 지원을 받을 수 있습니다.',
@@ -116,7 +116,7 @@ INSERT INTO policies (id, category_id, title, summary, description, eligibility,
  18, NULL, NULL, NULL, NULL, NULL, NULL, FALSE, TRUE),
 
 -- 기초연금
-('pol-102', 'cat-pension-001',
+('b0000001-0000-0000-0000-000000000102', 'a0000001-0000-0000-0000-000000000002',
  '기초연금',
  '만 65세 이상 소득 하위 70% 어르신에게 매월 지급되는 연금',
  '기초연금은 노인의 생활 안정을 위해 만 65세 이상 소득인정액이 선정기준액 이하인 어르신에게 매월 일정액을 지급하는 제도입니다. 국민연금과 별도로 지급됩니다.',
@@ -130,7 +130,7 @@ INSERT INTO policies (id, category_id, title, summary, description, eligibility,
  65, NULL, NULL, 2130, NULL, NULL, NULL, FALSE, TRUE),
 
 -- 농지연금
-('pol-103', 'cat-pension-001',
+('b0000001-0000-0000-0000-000000000103', 'a0000001-0000-0000-0000-000000000002',
  '농지연금',
  '소유 농지를 담보로 매월 연금을 수령하는 제도',
  '만 65세 이상 농업인이 소유한 농지를 담보로 매월 연금을 수령하는 제도입니다. 농지를 팔지 않고도 노후 생활자금을 마련할 수 있습니다. 사망 시 배우자 승계 가능합니다.',
@@ -147,7 +147,7 @@ INSERT INTO policies (id, category_id, title, summary, description, eligibility,
 INSERT INTO policies (id, category_id, title, summary, description, eligibility, benefits, required_documents, apply_url, apply_method, contact_info, department, min_age, max_age, min_income, max_income, required_farm_area, required_farming_types, required_region, requires_eco_cert, is_active) VALUES
 
 -- 농업인 건강안전보험
-('pol-201', 'cat-health-001',
+('b0000001-0000-0000-0000-000000000201', 'a0000001-0000-0000-0000-000000000003',
  '농업인 안전보험 (농작업 재해보험)',
  '농작업 중 발생하는 재해에 대한 보험료 지원',
  '농업인이 농작업 중 사고나 질병으로 피해를 입었을 때 보상받을 수 있는 보험입니다. 보험료의 50%를 정부가 지원합니다.',
@@ -161,7 +161,7 @@ INSERT INTO policies (id, category_id, title, summary, description, eligibility,
  NULL, NULL, NULL, NULL, NULL, NULL, NULL, FALSE, TRUE),
 
 -- 농업인 건강보험료 지원
-('pol-202', 'cat-health-001',
+('b0000001-0000-0000-0000-000000000202', 'a0000001-0000-0000-0000-000000000003',
  '농어업인 건강보험료 경감',
  '농어업인 건강보험료 22% 경감 지원',
  '농어업에 종사하는 가입자의 건강보험료 부담을 줄여주는 제도입니다. 지역가입자 중 농어업인으로 확인된 세대에 건강보험료를 22% 경감해줍니다.',
@@ -175,7 +175,7 @@ INSERT INTO policies (id, category_id, title, summary, description, eligibility,
  NULL, NULL, NULL, NULL, NULL, NULL, NULL, FALSE, TRUE),
 
 -- 어르신 건강검진
-('pol-203', 'cat-health-001',
+('b0000001-0000-0000-0000-000000000203', 'a0000001-0000-0000-0000-000000000003',
  '국가 건강검진 (66세 이상 생애전환기)',
  '66세 이상 어르신 대상 맞춤형 건강검진 무료 제공',
  '만 66세 이상 의료급여 수급권자 및 건강보험 가입자를 대상으로 정신건강검사, 생활습관평가, 노인신체기능검사 등을 포함한 건강검진을 무료로 제공합니다.',
@@ -192,7 +192,7 @@ INSERT INTO policies (id, category_id, title, summary, description, eligibility,
 INSERT INTO policies (id, category_id, title, summary, description, eligibility, benefits, required_documents, apply_url, apply_method, contact_info, department, min_age, max_age, min_income, max_income, required_farm_area, required_farming_types, required_region, requires_eco_cert, is_active) VALUES
 
 -- 기초생활보장
-('pol-301', 'cat-welfare-001',
+('b0000001-0000-0000-0000-000000000301', 'a0000001-0000-0000-0000-000000000004',
  '국민기초생활보장제도 (생계급여)',
  '소득이 기준 중위소득 30% 이하인 가구에 생계급여 지급',
  '가구의 소득인정액이 기준 중위소득의 30% 이하인 경우 생계급여를 지급하여 최저생활을 보장하는 제도입니다.',
@@ -206,7 +206,7 @@ INSERT INTO policies (id, category_id, title, summary, description, eligibility,
  NULL, NULL, NULL, 713, NULL, NULL, NULL, FALSE, TRUE),
 
 -- 에너지 바우처
-('pol-302', 'cat-welfare-001',
+('b0000001-0000-0000-0000-000000000302', 'a0000001-0000-0000-0000-000000000004',
  '에너지 바우처',
  '에너지 취약계층에게 냉난방비를 지원하는 바우처',
  '소득이 낮고 에너지 사용에 어려움이 있는 취약계층 가구에 냉·난방 에너지 비용을 지원합니다. 여름철(7~9월) 냉방, 겨울철(11~3월) 난방 비용을 바우처로 지급합니다.',
@@ -220,7 +220,7 @@ INSERT INTO policies (id, category_id, title, summary, description, eligibility,
  NULL, NULL, NULL, 713, NULL, NULL, NULL, FALSE, TRUE),
 
 -- 주거급여
-('pol-303', 'cat-welfare-001',
+('b0000001-0000-0000-0000-000000000303', 'a0000001-0000-0000-0000-000000000004',
  '주거급여',
  '소득 하위계층의 주거비(임차료·수선비) 지원',
  '소득인정액이 기준 중위소득 48% 이하인 가구에 임차료 보조 또는 자가 주택 수선비를 지원합니다.',
@@ -237,7 +237,7 @@ INSERT INTO policies (id, category_id, title, summary, description, eligibility,
 INSERT INTO policies (id, category_id, title, summary, description, eligibility, benefits, required_documents, apply_url, apply_method, contact_info, department, min_age, max_age, min_income, max_income, required_farm_area, required_farming_types, required_region, requires_eco_cert, is_active) VALUES
 
 -- 농업인 교육
-('pol-401', 'cat-edu-001',
+('b0000001-0000-0000-0000-000000000401', 'a0000001-0000-0000-0000-000000000006',
  '농업인 역량강화 교육',
  '농업기술, 경영, 마케팅 등 무료 교육 프로그램',
  '농촌진흥청과 각 시도 농업기술원에서 제공하는 무료 교육 프로그램입니다. 스마트팜, 유기농법, 농산물 마케팅, 6차산업 등 다양한 교육을 받을 수 있습니다.',
@@ -251,7 +251,7 @@ INSERT INTO policies (id, category_id, title, summary, description, eligibility,
  NULL, NULL, NULL, NULL, NULL, NULL, NULL, FALSE, TRUE),
 
 -- 농업경영 컨설팅
-('pol-402', 'cat-edu-001',
+('b0000001-0000-0000-0000-000000000402', 'a0000001-0000-0000-0000-000000000006',
  '농업경영 컨설팅 지원',
  '전문가가 직접 농가를 방문하여 경영 컨설팅 제공',
  '농업 경영에 어려움을 겪는 농가를 대상으로 전문 컨설턴트가 방문하여 경영진단, 재무관리, 판로 개척 등을 지원합니다.',
@@ -268,7 +268,7 @@ INSERT INTO policies (id, category_id, title, summary, description, eligibility,
 INSERT INTO policy_form_templates (id, policy_id, form_name, fields) VALUES
 
 -- 공익직접지불제 신청서
-('form-001', 'pol-001', '공익직접지불제 신청서', '[
+('c0000001-0000-0000-0000-000000000001', 'b0000001-0000-0000-0000-000000000001', '공익직접지불제 신청서', '[
   {"id":"name","label":"성명","type":"text","profile_key":"name","required":true},
   {"id":"birth_date","label":"생년월일","type":"date","profile_key":"birth_date","required":true},
   {"id":"phone","label":"연락처","type":"text","profile_key":"phone","required":true},
@@ -283,7 +283,7 @@ INSERT INTO policy_form_templates (id, policy_id, form_name, fields) VALUES
 ]'),
 
 -- 기초연금 신청서
-('form-002', 'pol-102', '기초연금 신청서', '[
+('c0000001-0000-0000-0000-000000000002', 'b0000001-0000-0000-0000-000000000102', '기초연금 신청서', '[
   {"id":"name","label":"성명","type":"text","profile_key":"name","required":true},
   {"id":"birth_date","label":"생년월일","type":"date","profile_key":"birth_date","required":true},
   {"id":"phone","label":"연락처","type":"text","profile_key":"phone","required":true},
@@ -298,7 +298,7 @@ INSERT INTO policy_form_templates (id, policy_id, form_name, fields) VALUES
 ]'),
 
 -- 농업인 안전보험 신청서
-('form-003', 'pol-201', '농업인 안전보험 가입 신청서', '[
+('c0000001-0000-0000-0000-000000000003', 'b0000001-0000-0000-0000-000000000201', '농업인 안전보험 가입 신청서', '[
   {"id":"name","label":"성명","type":"text","profile_key":"name","required":true},
   {"id":"birth_date","label":"생년월일","type":"date","profile_key":"birth_date","required":true},
   {"id":"phone","label":"연락처","type":"text","profile_key":"phone","required":true},
@@ -312,7 +312,7 @@ INSERT INTO policy_form_templates (id, policy_id, form_name, fields) VALUES
 ]'),
 
 -- 국민연금 신청서
-('form-004', 'pol-101', '국민연금 가입/변경 신청서', '[
+('c0000001-0000-0000-0000-000000000004', 'b0000001-0000-0000-0000-000000000101', '국민연금 가입/변경 신청서', '[
   {"id":"name","label":"성명","type":"text","profile_key":"name","required":true},
   {"id":"birth_date","label":"생년월일","type":"date","profile_key":"birth_date","required":true},
   {"id":"phone","label":"연락처","type":"text","profile_key":"phone","required":true},
