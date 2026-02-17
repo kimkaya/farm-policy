@@ -8,7 +8,7 @@ interface AuthContextType {
   session: Session | null;
   profile: UserProfile | null;
   loading: boolean;
-  signUp: (email: string, password: string) => Promise<{ error: any }>;
+  signUp: (email: string, password: string) => Promise<{ error: any; session: Session | null }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
@@ -64,8 +64,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signUp = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signUp({ email, password });
-    return { error };
+    const { data, error } = await supabase.auth.signUp({ email, password });
+    // autoconfirm이 켜져 있으면 session이 바로 반환됨
+    // onAuthStateChange가 자동으로 user/session을 업데이트함
+    return { error, session: data?.session ?? null };
   };
 
   const signIn = async (email: string, password: string) => {
