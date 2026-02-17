@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+/* 농민 친화적 기본 스타일 */
+:root {
+  --color-primary: #16a34a;
+  --color-primary-dark: #15803d;
+  --color-primary-light: #bbf7d0;
+  --color-secondary: #ca8a04;
+  --color-bg: #f0fdf4;
+}
+
+body {
+  font-family: 'Pretendard', 'Noto Sans KR', system-ui, -apple-system, sans-serif;
+  background-color: var(--color-bg);
+  color: #1a1a1a;
+  margin: 0;
+  min-height: 100vh;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+/* 큰 글씨 기본 설정 (농민분들 접근성) */
+h1 { font-size: 2rem; font-weight: 800; }
+h2 { font-size: 1.6rem; font-weight: 700; }
+h3 { font-size: 1.3rem; font-weight: 600; }
+p { font-size: 1.1rem; }
+
+/* 프린트 스타일 */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white;
+    font-size: 12pt;
+  }
+  .print-only {
+    display: block !important;
+  }
+}
+
+.print-only {
+  display: none;
+}
