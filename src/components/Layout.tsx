@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import {
-  Home, Search, User, FileText, LogOut, Menu, X, Tractor
+  Home, Search, User, FileText, LogOut, Menu, X, Tractor, FolderOpen
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -14,6 +14,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     { path: '/', label: '홈', icon: Home },
     { path: '/policies', label: '정책 찾기', icon: Search },
     { path: '/my-info', label: '내 정보', icon: User },
+    { path: '/my-documents', label: '서류 보관함', icon: FolderOpen },
     { path: '/my-applications', label: '신청서 관리', icon: FileText },
   ];
 

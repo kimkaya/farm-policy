@@ -4,11 +4,15 @@ import { useAuth } from '../contexts/AuthContext';
 import {
   getPolicyById, getFormTemplate, saveApplication
 } from '../services/policyService';
+import {
+  getMyDocuments, checkDocuments, getSignedUrl, getMultipleSignedUrls,
+} from '../services/documentService';
 import { generatePDF, printElement } from '../utils/pdfGenerator';
-import type { Policy, PolicyFormTemplate, FormField } from '../types';
+import type { Policy, PolicyFormTemplate, FormField, UserDocument } from '../types';
 import {
   ArrowLeft, FileText, Save, Download, Printer,
-  CheckCircle, Loader2, AlertCircle
+  CheckCircle, Loader2, AlertCircle, Check, X as XIcon,
+  Eye, FolderOpen, Package
 } from 'lucide-react';
 
 export default function ApplicationForm() {
@@ -24,10 +28,26 @@ export default function ApplicationForm() {
   const [saved, setSaved] = useState(false);
   const [pdfLoading, setPdfLoading] = useState(false);
   const [error, setError] = useState('');
+  const [myDocs, setMyDocs] = useState<UserDocument[]>([]);
+  const [docCheck, setDocCheck] = useState<{ doc_name: string; has_document: boolean; user_document?: UserDocument }[]>([]);
+  const [downloadingAll, setDownloadingAll] = useState(false);
 
   useEffect(() => {
     if (policyId) loadData(policyId);
   }, [policyId]);
+
+  useEffect(() => {
+    if (user) {
+      getMyDocuments(user.id).then(setMyDocs).catch(console.error);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (policy && myDocs.length >= 0) {
+      const checks = checkDocuments(policy.required_documents, myDocs);
+      setDocCheck(checks);
+    }
+  }, [policy, myDocs]);
 
   const loadData = async (id: string) => {
     setLoading(true);
@@ -106,6 +126,28 @@ export default function ApplicationForm() {
 
   const handlePrint = () => {
     printElement('application-form-print');
+  };
+
+  const handleDownloadAllDocs = async () => {
+    const availableDocs = docCheck.filter((d) => d.has_document && d.user_document);
+    if (availableDocs.length === 0) {
+      alert('다운로드할 서류가 없습니다.');
+      return;
+    }
+    setDownloadingAll(true);
+    try {
+      const urls = await getMultipleSignedUrls(
+        availableDocs.map((d) => d.user_document!)
+      );
+      // 각각 새 탭으로 열기
+      for (const { url } of urls) {
+        window.open(url, '_blank');
+      }
+    } catch (err) {
+      alert('서류 다운로드 중 오류가 발생했습니다.');
+      console.error(err);
+    }
+    setDownloadingAll(false);
   };
 
   if (loading) {
@@ -257,6 +299,82 @@ export default function ApplicationForm() {
           </div>
         </div>
       </div>
+
+      {/* 첨부 서류 체크리스트 */}
+      {policy.required_documents.length > 0 && (
+        <div className="bg-white rounded-2xl shadow-md p-6 mb-6 border border-green-100">
+          <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
+            <h2 className="text-xl font-bold text-green-800 m-0 flex items-center gap-2">
+              <FolderOpen size={24} />
+              첨부 서류 확인
+            </h2>
+            <span className="text-base text-gray-500">
+              {docCheck.filter((d) => d.has_document).length}/{docCheck.length}개 준비됨
+            </span>
+          </div>
+
+          <div className="space-y-2 mb-4">
+            {docCheck.map((item, i) => (
+              <div
+                key={i}
+                className={`flex items-center justify-between gap-3 p-3 rounded-xl ${
+                  item.has_document
+                    ? 'bg-green-50 border border-green-200'
+                    : 'bg-red-50 border border-red-200'
+                }`}
+              >
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                  {item.has_document ? (
+                    <Check size={22} className="text-green-600 flex-shrink-0" />
+                  ) : (
+                    <XIcon size={22} className="text-red-500 flex-shrink-0" />
+                  )}
+                  <span className={`text-base font-medium ${
+                    item.has_document ? 'text-green-800' : 'text-red-700'
+                  }`}>
+                    {item.doc_name}
+                  </span>
+                </div>
+                {item.has_document && item.user_document && (
+                  <button
+                    onClick={async () => {
+                      try {
+                        const url = await getSignedUrl(item.user_document!.file_path);
+                        window.open(url, '_blank');
+                      } catch { /* ignore */ }
+                    }}
+                    className="flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-lg hover:bg-green-200 transition-colors border-0 cursor-pointer flex-shrink-0"
+                  >
+                    <Eye size={14} />
+                    보기
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* 일괄 다운로드/출력 버튼 */}
+          {docCheck.some((d) => d.has_document) && (
+            <button
+              onClick={handleDownloadAllDocs}
+              disabled={downloadingAll}
+              className="flex items-center justify-center gap-2 w-full py-3 bg-blue-600 hover:bg-blue-700 text-white text-lg font-bold rounded-xl transition-colors disabled:bg-gray-400 border-0 cursor-pointer"
+            >
+              {downloadingAll ? (
+                <>
+                  <Loader2 size={20} className="animate-spin" />
+                  서류 열기 중...
+                </>
+              ) : (
+                <>
+                  <Package size={20} />
+                  준비된 서류 한번에 열기 ({docCheck.filter((d) => d.has_document).length}개)
+                </>
+              )}
+            </button>
+          )}
+        </div>
+      )}
 
       {/* 버튼들 */}
       <div className="flex flex-wrap gap-3 justify-center no-print">

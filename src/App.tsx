@@ -12,6 +12,7 @@ const PolicyDetail = lazy(() => import('./pages/PolicyDetail'));
 const MyInfo = lazy(() => import('./pages/MyInfo'));
 const ApplicationForm = lazy(() => import('./pages/ApplicationForm'));
 const MyApplications = lazy(() => import('./pages/MyApplications'));
+const MyDocuments = lazy(() => import('./pages/MyDocuments'));
 
 function LoadingSpinner() {
   return (
@@ -104,6 +105,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <MyApplications />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-documents"
+          element={
+            <ProtectedRoute>
+              <MyDocuments />
             </ProtectedRoute>
           }
         />

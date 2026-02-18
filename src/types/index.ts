@@ -111,3 +111,23 @@ export interface PublicApiResponse<T> {
   total_count: number;
   error?: string;
 }
+
+// 사용자 서류 (업로드된 문서)
+export interface UserDocument {
+  id: string;
+  user_id: string;
+  doc_name: string;      // 서류 이름 (예: "주민등록등본")
+  doc_type: string;       // 서류 유형 키 (매칭용, 예: "주민등록등본")
+  file_path: string;      // Supabase Storage 경로
+  file_size: number;
+  mime_type: string;
+  created_at: string;
+  updated_at: string;
+}
+
+// 서류 체크리스트 항목 (정책 필요서류 vs 내가 가진 서류)
+export interface DocumentCheckItem {
+  doc_name: string;       // 필요서류 이름
+  has_document: boolean;  // 내가 가지고 있는지
+  user_document?: UserDocument; // 매칭된 내 서류
+}

@@ -2,19 +2,23 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { getPolicyById, getFormTemplate, matchPolicies } from '../services/policyService';
-import type { Policy, PolicyFormTemplate, PolicyMatch } from '../types';
+import { getMyDocuments, checkDocuments, getSignedUrl } from '../services/documentService';
+import type { Policy, PolicyFormTemplate, PolicyMatch, UserDocument } from '../types';
 import {
   ArrowLeft, Calendar, Building2, Phone, Globe, FileText,
-  Star, CheckCircle, XCircle, ClipboardList, Loader2, ExternalLink
+  Star, CheckCircle, XCircle, ClipboardList, Loader2, ExternalLink,
+  Check, X as XIcon, Download, Eye, FolderOpen
 } from 'lucide-react';
 
 export default function PolicyDetail() {
   const { id } = useParams<{ id: string }>();
-  const { profile } = useAuth();
+  const { user, profile } = useAuth();
   const navigate = useNavigate();
   const [policy, setPolicy] = useState<Policy | null>(null);
   const [template, setTemplate] = useState<PolicyFormTemplate | null>(null);
   const [match, setMatch] = useState<PolicyMatch | null>(null);
+  const [myDocs, setMyDocs] = useState<UserDocument[]>([]);
+  const [docCheck, setDocCheck] = useState<{ doc_name: string; has_document: boolean; user_document?: UserDocument }[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -23,11 +27,24 @@ export default function PolicyDetail() {
   }, [id]);
 
   useEffect(() => {
+    if (user) {
+      getMyDocuments(user.id).then(setMyDocs).catch(console.error);
+    }
+  }, [user]);
+
+  useEffect(() => {
     if (profile && policy) {
       const matches = matchPolicies(profile, [policy]);
       setMatch(matches.length > 0 ? matches[0] : null);
     }
   }, [profile, policy]);
+
+  useEffect(() => {
+    if (policy && myDocs) {
+      const checks = checkDocuments(policy.required_documents, myDocs);
+      setDocCheck(checks);
+    }
+  }, [policy, myDocs]);
 
   const loadPolicy = async (policyId: string) => {
     setLoading(true);
@@ -221,19 +238,77 @@ export default function PolicyDetail() {
             )}
           </section>
 
-          {/* 필요 서류 */}
+          {/* 필요 서류 - 체크리스트 */}
           <section className="bg-white rounded-2xl shadow-md p-6 border border-green-100">
-            <h2 className="text-xl font-bold text-green-800 mb-4 pb-3 border-b-2 border-green-200">
+            <h2 className="text-xl font-bold text-green-800 mb-2 pb-3 border-b-2 border-green-200">
               필요 서류
             </h2>
-            <ul className="space-y-2 list-none p-0 m-0">
-              {policy.required_documents.map((doc, i) => (
+            {docCheck.length > 0 && (
+              <p className="text-sm text-gray-500 mb-4 m-0">
+                {docCheck.filter((d) => d.has_document).length}/{docCheck.length}개 준비 완료
+              </p>
+            )}
+            <ul className="space-y-3 list-none p-0 m-0">
+              {docCheck.length > 0 ? docCheck.map((item, i) => (
+                <li key={i} className={`flex items-center justify-between gap-3 p-3 rounded-xl text-base ${
+                  item.has_document ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'
+                }`}>
+                  <div className="flex items-center gap-2 flex-1 min-w-0">
+                    {item.has_document ? (
+                      <Check size={22} className="text-green-600 flex-shrink-0" />
+                    ) : (
+                      <XIcon size={22} className="text-red-500 flex-shrink-0" />
+                    )}
+                    <span className={`${item.has_document ? 'text-green-800' : 'text-red-700'} font-medium`}>
+                      {item.doc_name}
+                    </span>
+                  </div>
+                  {item.has_document && item.user_document && (
+                    <button
+                      onClick={async () => {
+                        try {
+                          const url = await getSignedUrl(item.user_document!.file_path);
+                          window.open(url, '_blank');
+                        } catch { /* ignore */ }
+                      }}
+                      className="flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-lg hover:bg-green-200 transition-colors border-0 cursor-pointer flex-shrink-0"
+                    >
+                      <Eye size={14} />
+                      보기
+                    </button>
+                  )}
+                  {!item.has_document && (
+                    <Link
+                      to="/my-documents"
+                      className="flex items-center gap-1 px-2 py-1 bg-red-100 text-red-600 text-sm font-medium rounded-lg hover:bg-red-200 transition-colors no-underline flex-shrink-0"
+                    >
+                      <FolderOpen size={14} />
+                      올리기
+                    </Link>
+                  )}
+                </li>
+              )) : policy.required_documents.map((doc, i) => (
                 <li key={i} className="flex items-start gap-2 text-base text-gray-700">
                   <ClipboardList size={18} className="text-green-500 flex-shrink-0 mt-1" />
                   {doc}
                 </li>
               ))}
             </ul>
+            {docCheck.length > 0 && docCheck.some((d) => !d.has_document) && (
+              <Link
+                to="/my-documents"
+                className="flex items-center justify-center gap-2 w-full mt-4 px-4 py-3 bg-orange-50 border border-orange-200 text-orange-700 font-bold rounded-xl no-underline hover:bg-orange-100 transition-colors text-base"
+              >
+                <FolderOpen size={18} />
+                부족한 서류 올리러 가기
+              </Link>
+            )}
+            {docCheck.length > 0 && docCheck.every((d) => d.has_document) && (
+              <div className="flex items-center gap-2 mt-4 px-4 py-3 bg-green-100 border border-green-300 text-green-800 font-bold rounded-xl text-base">
+                <CheckCircle size={20} />
+                모든 서류가 준비되었습니다!
+              </div>
+            )}
           </section>
 
           {/* 문의처 */}
