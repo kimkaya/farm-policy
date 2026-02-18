@@ -6,7 +6,7 @@ import {
 } from '../services/documentService';
 import type { UserDocument } from '../types';
 import {
-  FolderOpen, Upload, Trash2, Download, FileText, Loader2,
+  FolderOpen, Upload, Trash2, FileText, Loader2,
   Plus, X, Eye,
 } from 'lucide-react';
 

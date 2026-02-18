@@ -7,7 +7,7 @@ import type { Policy, PolicyFormTemplate, PolicyMatch, UserDocument } from '../t
 import {
   ArrowLeft, Calendar, Building2, Phone, Globe, FileText,
   Star, CheckCircle, XCircle, ClipboardList, Loader2, ExternalLink,
-  Check, X as XIcon, Download, Eye, FolderOpen
+  Check, X as XIcon, Eye, FolderOpen
 } from 'lucide-react';
 
 export default function PolicyDetail() {
